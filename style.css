@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #fff9db; /* amarillo pálido */
+  background-color: #fff9db;
   margin: 20px;
   color: #333;
 }
@@ -8,7 +8,7 @@ body {
 #malla {
   display: flex;
   flex-wrap: nowrap;
-  gap: 20px;
+  gap: 15px;
   overflow-x: auto;
   padding-bottom: 20px;
   border-bottom: 2px solid #ccc;
@@ -17,59 +17,56 @@ body {
 .semestre {
   display: flex;
   flex-direction: column;
-  min-width: 220px;
+  min-width: 200px;
+  border: 1px solid #999;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f0f0f0;
 }
 
 .semestre h2 {
-  margin-bottom: 10px;
-  font-size: 18px;
   text-align: center;
-  color: #444;
+  margin-bottom: 10px;
   user-select: none;
+  font-size: 18px;
 }
 
 .ramo {
-  user-select: none;
-  padding: 12px 8px;
   margin: 5px 0;
+  padding: 10px;
   border-radius: 6px;
-  box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
   font-weight: 600;
-  font-size: 14px;
   text-align: center;
-  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
 }
 
-/* Estados de los ramos */
 .ramo.bloqueado {
-  background-color: #f9c2c2; /* rojo claro */
+  background-color: #f9c2c2;
   color: #8a1c1c;
   cursor: not-allowed;
 }
 
 .ramo.desbloqueado {
-  background-color: #b8e6b8; /* verde claro */
+  background-color: #b8e6b8;
   color: #245624;
-  cursor: pointer;
 }
 
 .ramo.aprobado {
-  background-color: #3a7d3a; /* verde oscuro */
+  background-color: #3a7d3a;
   color: #d0f0d0;
-  cursor: pointer;
   font-weight: 700;
 }
 
 #btn-reset {
   margin-top: 15px;
-  padding: 10px 18px;
+  padding: 10px 20px;
   background-color: #ffcc00;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgb(0 0 0 / 0.2);
-  transition: background-color 0.3s ease;
 }
 
 #btn-reset:hover {
