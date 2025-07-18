@@ -1,4 +1,4 @@
-// Definir los ramos organizados por semestre
+// Ramos organizados por semestre (arrays)
 const semestres = [
   [
     { nombre: "Química general", requisitos: [] },
@@ -79,16 +79,16 @@ const semestres = [
   ]
 ];
 
-// Estado global de ramos: "bloqueado", "desbloqueado" o "aprobado"
+// Estado global
 const estadoRamos = {};
 
-// Comprueba si todos los requisitos están aprobados
+// Verifica si todos los requisitos de un ramo están aprobados
 function puedeDesbloquear(ramo) {
   if (ramo.requisitos.length === 0) return true;
   return ramo.requisitos.every(req => estadoRamos[req] === "aprobado");
 }
 
-// Actualiza estados para desbloquear o bloquear según requisitos
+// Actualiza estados para desbloquear/bloquear según requisitos y aprobaciones
 function actualizarEstados() {
   for (const semestre of semestres) {
     for (const ramo of semestre) {
@@ -99,22 +99,24 @@ function actualizarEstados() {
   }
 }
 
-// Renderiza la malla
+// Renderiza la malla con columnas (cada semestre)
 function renderizarMalla() {
   const contenedor = document.getElementById("malla");
   contenedor.innerHTML = "";
 
-  semestres.forEach((semestre, index) => {
-    const fila = document.createElement("div");
-    fila.className = "semestre";
+  semestres.forEach((semestre, i) => {
+    const columna = document.createElement("div");
+    columna.className = "semestre-col";
 
     const titulo = document.createElement("div");
     titulo.className = "semestre-title";
-    titulo.textContent = `Semestre ${index + 1}`;
-    fila.appendChild(titulo);
+    titulo.textContent = `Semestre ${i + 1}`;
+    columna.appendChild(titulo);
 
     semestre.forEach(ramo => {
       const div = document.createElement("div");
+
+      // Estado actual o calculado
       const estado = estadoRamos[ramo.nombre] || (puedeDesbloquear(ramo) ? "desbloqueado" : "bloqueado");
       estadoRamos[ramo.nombre] = estado;
 
@@ -125,12 +127,8 @@ function renderizarMalla() {
       if (estado !== "bloqueado") {
         div.style.cursor = "pointer";
         div.addEventListener("click", () => {
-          // Alternar aprobado/desbloqueado (toggle)
-          if (estadoRamos[ramo.nombre] === "aprobado") {
-            estadoRamos[ramo.nombre] = "desbloqueado";
-          } else {
-            estadoRamos[ramo.nombre] = "aprobado";
-          }
+          // Toggle aprobado / desbloqueado
+          estadoRamos[ramo.nombre] = (estadoRamos[ramo.nombre] === "aprobado") ? "desbloqueado" : "aprobado";
           actualizarEstados();
           renderizarMalla();
         });
@@ -138,15 +136,16 @@ function renderizarMalla() {
         div.style.cursor = "not-allowed";
       }
 
-      fila.appendChild(div);
+      columna.appendChild(div);
     });
 
-    contenedor.appendChild(fila);
+    contenedor.appendChild(columna);
   });
 }
 
-// Inicializar estados y renderizar
+// Inicialización
 function iniciar() {
+  // Setear todos los ramos inicialmente desbloqueados o bloqueados según requisitos
   for (const semestre of semestres) {
     for (const ramo of semestre) {
       estadoRamos[ramo.nombre] = puedeDesbloquear(ramo) ? "desbloqueado" : "bloqueado";
