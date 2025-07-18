@@ -1,4 +1,3 @@
-// Datos de la malla: arreglo de semestres con ramos y requisitos
 const semestres = [
   [
     { nombre: "Química general", requisitos: [] },
@@ -81,11 +80,9 @@ const semestres = [
 
 // Clave para localStorage
 const STORAGE_KEY = "malla-academica-estados";
-
-// Estados: { "nombre del ramo": "bloqueado"|"desbloqueado"|"aprobado" }
 let estados = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-// Crear mapa para buscar rápido ramo por nombre
+// Mapa nombre a ramo para rápido acceso
 const nombreMap = {};
 semestres.forEach((sem, i) =>
   sem.forEach((ramo, j) => {
@@ -93,58 +90,41 @@ semestres.forEach((sem, i) =>
   })
 );
 
-function getRamoPorNombre(nombre) {
+// Comprueba si ramo está aprobado
+function estaAprobado(nombre) {
+  return estados[nombre.toLowerCase()] === "aprobado";
+}
+
+// Comprueba si ramo está desbloqueado (todos requisitos aprobados)
+function estaDesbloqueado(nombre) {
+  if (estaAprobado(nombre)) return true;
+  const ramo = getRamo(nombre);
+  if (!ramo) return false;
+  return ramo.requisitos.every(estaAprobado);
+}
+
+function getRamo(nombre) {
   const key = nombre.toLowerCase();
   const pos = nombreMap[key];
   if (!pos) return null;
   return semestres[pos.semestre][pos.indice];
 }
 
-function estaAprobado(nombre) {
-  return estados[nombre.toLowerCase()] === "aprobado";
-}
-
-function estaDesbloqueado(nombre) {
-  if (estaAprobado(nombre)) return true;
-  const ramo = getRamoPorNombre(nombre);
-  if (!ramo) return false;
-  return ramo.requisitos.every(estaAprobado);
-}
-
+// Obtener estado actual para mostrar color
 function obtenerEstado(nombre) {
   if (estaAprobado(nombre)) return "aprobado";
   if (estaDesbloqueado(nombre)) return "desbloqueado";
   return "bloqueado";
 }
 
+// Guardar estados en localStorage
 function guardarEstados() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(estados));
 }
 
-// Función para sufijos ordinales en títulos
-function sufijoOrdinal(n) {
-  if (n === 1) return "er";
-  if (n === 2) return "do";
-  if (n === 3) return "er";
-  if (n === 4) return "to";
-  return "°";
-}
-
+// Crear el DOM de la malla
 function crearMalla() {
   const container = document.getElementById("malla");
   container.innerHTML = "";
 
-  semestres.forEach((semestre, i) => {
-    const semDiv = document.createElement("div");
-    semDiv.classList.add("semestre");
-
-    // Título semestre
-    const titulo = document.createElement("h2");
-    titulo.textContent = `${i + 1}${sufijoOrdinal(i + 1)} Semestre`;
-    semDiv.appendChild(titulo);
-
-    semestre.forEach((ramo) => {
-      const div = document.createElement("div");
-      div.classList.add("ramo");
-
-      const
+  semestres.forEach((semestre, i)
