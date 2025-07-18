@@ -1,4 +1,4 @@
-// Ramos organizados por semestre (arrays)
+// Datos: semestres con ramos y requisitos corregidos
 const semestres = [
   [
     { nombre: "Química general", requisitos: [] },
@@ -6,7 +6,7 @@ const semestres = [
     { nombre: "Zoología", requisitos: [] },
     { nombre: "Introducción a la medicina veterinaria", requisitos: [] },
     { nombre: "Practica 1", requisitos: [] },
-    { nombre: "Tecnología y innovación", requisitos: [] }
+    { nombre: "Tecnología y innovación", requisitos: [] },
   ],
   [
     { nombre: "Química orgánica", requisitos: ["Química general"] },
@@ -14,14 +14,14 @@ const semestres = [
     { nombre: "Estadísticas", requisitos: [] },
     { nombre: "Practica 2", requisitos: ["Practica 1"] },
     { nombre: "Ecología", requisitos: ["Zoología"] },
-    { nombre: "Inglés", requisitos: [] }
+    { nombre: "Inglés", requisitos: [] },
   ],
   [
     { nombre: "Fisiología veterinaria", requisitos: ["Histología y embriología"] },
     { nombre: "Anatomía 1", requisitos: ["Histología y embriología"] },
     { nombre: "Etología y bienestar animal", requisitos: [] },
     { nombre: "Practica 3", requisitos: ["Practica 2"] },
-    { nombre: "Gestión ambiental y conservación", requisitos: ["Ecología"] }
+    { nombre: "Gestión ambiental y conservación", requisitos: ["Ecología"] },
   ],
   [
     { nombre: "Interacción hospedero patógeno", requisitos: ["Fisiología veterinaria"] },
@@ -29,7 +29,7 @@ const semestres = [
     { nombre: "Fisiología especial", requisitos: ["Fisiología veterinaria"] },
     { nombre: "Módulo integrador ciclo inicial", requisitos: ["Etología y bienestar animal", "Gestión ambiental y conservación"] },
     { nombre: "Principios éticos veterinarios", requisitos: [] },
-    { nombre: "Genética pecuaria", requisitos: [] }
+    { nombre: "Genética pecuaria", requisitos: [] },
   ],
   [
     { nombre: "Alimentación y nutrición animal", requisitos: ["Fisiología especial"] },
@@ -37,15 +37,15 @@ const semestres = [
     { nombre: "Patología funcional", requisitos: ["Fisiología especial"] },
     { nombre: "Inspección y control de alimentos", requisitos: ["Interacción hospedero patógeno"] },
     { nombre: "Epidemiología", requisitos: ["Interacción hospedero patógeno"] },
-    { nombre: "Desarrollo sostenible", requisitos: [] }
+    { nombre: "Desarrollo sostenible", requisitos: [] },
   ],
   [
     { nombre: "Farmacología y terapéutica", requisitos: [] },
     { nombre: "Practica 5", requisitos: ["Practica 4"] },
     { nombre: "Semiología", requisitos: [] },
     { nombre: "Hematología y laboratorio clínico", requisitos: ["Fisiología especial"] },
-    { nombre: "Patología especial", requisitos: ["Patología especial"] },
-    { nombre: "Inglés técnico", requisitos: [] }
+    { nombre: "Patología especial", requisitos: ["Patología funcional"] },
+    { nombre: "Inglés técnico", requisitos: [] },
   ],
   [
     { nombre: "Producción animal 1", requisitos: ["Alimentación y nutrición animal"] },
@@ -53,7 +53,7 @@ const semestres = [
     { nombre: "Enfermedades infecciosas y parasitarias", requisitos: ["Patología especial"] },
     { nombre: "Ginecología y obstetricia", requisitos: ["Semiología"] },
     { nombre: "Metodología de la investigación", requisitos: [] },
-    { nombre: "Responsabilidad social y emprendimiento", requisitos: [] }
+    { nombre: "Responsabilidad social y emprendimiento", requisitos: [] },
   ],
   [
     { nombre: "Producción animal 2", requisitos: ["Producción animal 1"] },
@@ -61,7 +61,7 @@ const semestres = [
     { nombre: "Cirugía general", requisitos: ["Farmacología y terapéutica"] },
     { nombre: "Salud pública", requisitos: ["Epidemiología"] },
     { nombre: "Módulo integrador ciclo intermedio", requisitos: ["Practica 6", "Producción animal 1"] },
-    { nombre: "Preparación para la vida laboral", requisitos: [] }
+    { nombre: "Preparación para la vida laboral", requisitos: [] },
   ],
   [
     { nombre: "Clínica de animales mayores", requisitos: ["Medicina interna"] },
@@ -69,89 +69,54 @@ const semestres = [
     { nombre: "Clínica de animales menores", requisitos: ["Medicina interna"] },
     { nombre: "Economía y administración de empresas veterinarias", requisitos: [] },
     { nombre: "Imagenología", requisitos: ["Medicina interna"] },
-    { nombre: "Electivo de especialidad 1", requisitos: [] }
+    { nombre: "Electivo de especialidad 1", requisitos: [] },
   ],
   [
-    { nombre: "Módulo integrador profesional", requisitos: ["Clínica de animales mayores", "Clínica de animales menores"] },
+    { nombre: "Módulo integrador profesional", requisitos: ["Clínica de animales mayores", "Medicina interna"] },
     { nombre: "Salud laboral y legislación veterinaria", requisitos: [] },
     { nombre: "Evaluación de proyectos", requisitos: ["Economía y administración de empresas veterinarias"] },
-    { nombre: "Electivo de especialidad 2", requisitos: [] }
-  ]
+    { nombre: "Electivo de especialidad 2", requisitos: [] },
+  ],
 ];
 
-// Estado global
-const estadoRamos = {};
+// Estados posibles
+// "bloqueado" = rojo claro
+// "desbloqueado" = verde claro
+// "aprobado" = verde oscuro
 
-// Verifica si todos los requisitos de un ramo están aprobados
-function puedeDesbloquear(ramo) {
-  if (ramo.requisitos.length === 0) return true;
-  return ramo.requisitos.every(req => estadoRamos[req] === "aprobado");
+// Claves para guardar en localStorage
+const STORAGE_KEY = "malla-academica-estados";
+
+// Recuperar estados guardados o inicializar vacío
+let estados = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+// Crear referencia rápida de nombre a objeto {semestre, indice}
+const nombreMap = {};
+semestres.forEach((sem, i) =>
+  sem.forEach((ramo, j) => {
+    nombreMap[ramo.nombre.toLowerCase()] = { semestre: i, indice: j };
+  })
+);
+
+// Función para verificar si un ramo está aprobado
+function estaAprobado(nombre) {
+  const key = nombre.toLowerCase();
+  return estados[key] === "aprobado";
 }
 
-// Actualiza estados para desbloquear/bloquear según requisitos y aprobaciones
-function actualizarEstados() {
-  for (const semestre of semestres) {
-    for (const ramo of semestre) {
-      if (estadoRamos[ramo.nombre] !== "aprobado") {
-        estadoRamos[ramo.nombre] = puedeDesbloquear(ramo) ? "desbloqueado" : "bloqueado";
-      }
-    }
-  }
+// Función para verificar si un ramo está desbloqueado (todos requisitos aprobados)
+function estaDesbloqueado(nombre) {
+  const ramo = getRamoPorNombre(nombre);
+  if (!ramo) return false; // no encontrado
+  // Si ya aprobado, está desbloqueado
+  if (estaAprobado(nombre)) return true;
+
+  // Verificar requisitos
+  return ramo.requisitos.every((req) => estaAprobado(req));
 }
 
-// Renderiza la malla con columnas (cada semestre)
-function renderizarMalla() {
-  const contenedor = document.getElementById("malla");
-  contenedor.innerHTML = "";
-
-  semestres.forEach((semestre, i) => {
-    const columna = document.createElement("div");
-    columna.className = "semestre-col";
-
-    const titulo = document.createElement("div");
-    titulo.className = "semestre-title";
-    titulo.textContent = `Semestre ${i + 1}`;
-    columna.appendChild(titulo);
-
-    semestre.forEach(ramo => {
-      const div = document.createElement("div");
-
-      // Estado actual o calculado
-      const estado = estadoRamos[ramo.nombre] || (puedeDesbloquear(ramo) ? "desbloqueado" : "bloqueado");
-      estadoRamos[ramo.nombre] = estado;
-
-      div.className = `ramo ${estado}`;
-      div.textContent = ramo.nombre;
-      div.title = ramo.requisitos.length > 0 ? `Requisitos: ${ramo.requisitos.join(", ")}` : "Sin requisitos";
-
-      if (estado !== "bloqueado") {
-        div.style.cursor = "pointer";
-        div.addEventListener("click", () => {
-          // Toggle aprobado / desbloqueado
-          estadoRamos[ramo.nombre] = (estadoRamos[ramo.nombre] === "aprobado") ? "desbloqueado" : "aprobado";
-          actualizarEstados();
-          renderizarMalla();
-        });
-      } else {
-        div.style.cursor = "not-allowed";
-      }
-
-      columna.appendChild(div);
-    });
-
-    contenedor.appendChild(columna);
-  });
-}
-
-// Inicialización
-function iniciar() {
-  // Setear todos los ramos inicialmente desbloqueados o bloqueados según requisitos
-  for (const semestre of semestres) {
-    for (const ramo of semestre) {
-      estadoRamos[ramo.nombre] = puedeDesbloquear(ramo) ? "desbloqueado" : "bloqueado";
-    }
-  }
-  renderizarMalla();
-}
-
-iniciar();
+// Obtener ramo por nombre (case insensitive)
+function getRamoPorNombre(nombre) {
+  for (let semestre of semestres) {
+    for (let ramo of semestre) {
+      if (
