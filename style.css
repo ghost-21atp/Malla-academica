@@ -1,81 +1,76 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f9ff;
+  margin: 0;
   padding: 20px;
-  text-align: center;
 }
 
 h1 {
-  color: #333;
+  text-align: center;
+  color: #0a3d62;
 }
 
 .controls {
+  text-align: center;
   margin-bottom: 20px;
 }
 
 button {
-  padding: 10px 15px;
-  background-color: #d32f2f;
-  color: white;
+  padding: 10px 20px;
+  margin: 5px;
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-select {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.malla {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 20px;
-  justify-content: flex-start;
-  padding: 10px;
-}
-
-.semestre {
-  min-width: 250px;
-  background-color: #ffffff;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.semestre h2 {
-  background-color: #e0e0e0;
-  padding: 8px;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-.curso {
-  background: #eeeeee;
-  border: 1px solid #bbb;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.curso.aprobado {
-  background-color: #4caf50;
+  border-radius: 8px;
+  background-color: #3498db;
   color: white;
-  border-color: #388e3c;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-.curso.bloqueado {
-  background-color: #cccccc;
-  color: #666;
+button:hover {
+  background-color: #2980b9;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 15px;
+}
+
+.course {
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estados del ramo */
+.locked {
+  background-color: #e0e0e0;
+  color: #888;
+  border: 2px dashed #c0392b;
   cursor: not-allowed;
-  opacity: 0.6;
 }
 
-.hidden {
-  display: none;
+.unlocked {
+  background-color: #d6f0ff;
+  border: 2px solid #3498db;
+  color: #2c3e50;
+}
+
+.completed {
+  background-color: #2ecc71;
+  border: 2px solid #27ae60;
+  color: white;
+}
+
+/* Semestres (colores suaves por grupo si lo quieres aplicar) */
+.semester-title {
+  text-align: center;
+  margin: 20px 0 10px;
+  font-size: 20px;
+  color: #0a3d62;
+  grid-column: 1 / -1;
 }
