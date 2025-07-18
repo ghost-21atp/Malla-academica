@@ -3,12 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malla Interactiva Medicina Veterinaria</title>
+  <title>Malla Académica Veterinaria</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Malla Interactiva Medicina Veterinaria</h1>
-  <div id="malla"></div>
+  <h1>Malla Académica Medicina Veterinaria</h1>
+
+  <div class="controls">
+    <button onclick="resetMalla()">Reiniciar progreso</button>
+    <select id="filtro" onchange="filtrarRamos(this.value)">
+      <option value="todos">Ver todos</option>
+      <option value="aprobado">Aprobados</option>
+      <option value="pendiente">Pendientes</option>
+      <option value="bloqueado">Bloqueados</option>
+    </select>
+  </div>
+
+  <div id="malla" class="malla"></div>
 
   <script src="script.js"></script>
 </body>
