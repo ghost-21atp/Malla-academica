@@ -1,78 +1,84 @@
+/* Fondo pálido amarillo */
 body {
-  background-color: #fff9c4; /* amarillo pálido */
+  background-color: #fff9e6;
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
+  margin: 20px;
+  color: #333;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-/* Contenedor principal: filas = una fila con columnas (cada columna = semestre) */
+/* Contenedor malla: filas por semestre, con espacio */
 #malla {
   display: flex;
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  flex-direction: row;
+  gap: 15px;
   overflow-x: auto;
-  padding-bottom: 20px;
 }
 
-/* Cada columna representa un semestre */
-.semestre-col {
+/* Cada semestre: columna vertical */
+.semestre {
   display: flex;
   flex-direction: column;
   gap: 10px;
   min-width: 180px;
-  max-height: 90vh;
-  overflow-y: auto;
-  border-right: 2px solid #ccc;
-  padding-right: 10px;
 }
 
-/* Título del semestre arriba de la columna */
-.semestre-title {
-  font-weight: bold;
+/* Título semestre */
+.semestre h2 {
   text-align: center;
   margin-bottom: 10px;
-  color: #555;
-  font-size: 18px;
-  user-select: none;
+  font-size: 1.2rem;
+  color: #666;
 }
 
-/* Cuadros ramos */
+/* Cuadro de ramo */
 .ramo {
   padding: 12px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   cursor: pointer;
-  color: #000;
-  text-align: center;
-  font-weight: 600;
-  font-size: 14px;
   user-select: none;
-  transition: background-color 0.3s ease;
-  min-height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  transition: background-color 0.3s, color 0.3s;
+  border: 2px solid transparent;
 }
 
-/* Estados */
-.bloqueado {
-  background-color: #ffcdd2; /* rojo claro */
-  color: #b71c1c;
+/* Estados de ramo */
+
+/* Bloqueado: rojo claro */
+.ramo.bloqueado {
+  background-color: #f9c0c0;
+  color: #8b0000;
   cursor: not-allowed;
 }
 
-.desbloqueado {
-  background-color: #c8e6c9; /* verde claro */
-  color: #2e7d32;
+/* Desbloqueado: verde claro */
+.ramo.desbloqueado {
+  background-color: #b9f2b9;
+  color: #205020;
+  border-color: #0f7a0f;
 }
 
-.aprobado {
-  background-color: #2e7d32; /* verde oscuro */
-  color: #fff;
+/* Aprobado: verde oscuro */
+.ramo.aprobado {
+  background-color: #2a7a2a;
+  color: white;
+  border-color: #144d14;
+}
+
+/* Efecto hover solo si desbloqueado */
+.ramo.desbloqueado:hover {
+  background-color: #8de48d;
+  border-color: #0a620a;
+}
+
+/* Responsive para móviles: mostrar semestres verticalmente */
+@media (max-width: 720px) {
+  #malla {
+    flex-direction: column;
+  }
+  .semestre {
+    min-width: auto;
+    width: 100%;
+  }
 }
