@@ -1,4 +1,4 @@
-// Datos: semestres con ramos y requisitos corregidos
+// Datos de la malla: arreglo de semestres con ramos y requisitos
 const semestres = [
   [
     { nombre: "Química general", requisitos: [] },
@@ -79,18 +79,13 @@ const semestres = [
   ],
 ];
 
-// Estados posibles
-// "bloqueado" = rojo claro
-// "desbloqueado" = verde claro
-// "aprobado" = verde oscuro
-
-// Claves para guardar en localStorage
+// Clave para localStorage
 const STORAGE_KEY = "malla-academica-estados";
 
-// Recuperar estados guardados o inicializar vacío
+// Estados: { "nombre del ramo": "bloqueado"|"desbloqueado"|"aprobado" }
 let estados = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-// Crear referencia rápida de nombre a objeto {semestre, indice}
+// Crear mapa para buscar rápido ramo por nombre
 const nombreMap = {};
 semestres.forEach((sem, i) =>
   sem.forEach((ramo, j) => {
@@ -98,25 +93,58 @@ semestres.forEach((sem, i) =>
   })
 );
 
-// Función para verificar si un ramo está aprobado
-function estaAprobado(nombre) {
-  const key = nombre.toLowerCase();
-  return estados[key] === "aprobado";
-}
-
-// Función para verificar si un ramo está desbloqueado (todos requisitos aprobados)
-function estaDesbloqueado(nombre) {
-  const ramo = getRamoPorNombre(nombre);
-  if (!ramo) return false; // no encontrado
-  // Si ya aprobado, está desbloqueado
-  if (estaAprobado(nombre)) return true;
-
-  // Verificar requisitos
-  return ramo.requisitos.every((req) => estaAprobado(req));
-}
-
-// Obtener ramo por nombre (case insensitive)
 function getRamoPorNombre(nombre) {
-  for (let semestre of semestres) {
-    for (let ramo of semestre) {
-      if (
+  const key = nombre.toLowerCase();
+  const pos = nombreMap[key];
+  if (!pos) return null;
+  return semestres[pos.semestre][pos.indice];
+}
+
+function estaAprobado(nombre) {
+  return estados[nombre.toLowerCase()] === "aprobado";
+}
+
+function estaDesbloqueado(nombre) {
+  if (estaAprobado(nombre)) return true;
+  const ramo = getRamoPorNombre(nombre);
+  if (!ramo) return false;
+  return ramo.requisitos.every(estaAprobado);
+}
+
+function obtenerEstado(nombre) {
+  if (estaAprobado(nombre)) return "aprobado";
+  if (estaDesbloqueado(nombre)) return "desbloqueado";
+  return "bloqueado";
+}
+
+function guardarEstados() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(estados));
+}
+
+// Función para sufijos ordinales en títulos
+function sufijoOrdinal(n) {
+  if (n === 1) return "er";
+  if (n === 2) return "do";
+  if (n === 3) return "er";
+  if (n === 4) return "to";
+  return "°";
+}
+
+function crearMalla() {
+  const container = document.getElementById("malla");
+  container.innerHTML = "";
+
+  semestres.forEach((semestre, i) => {
+    const semDiv = document.createElement("div");
+    semDiv.classList.add("semestre");
+
+    // Título semestre
+    const titulo = document.createElement("h2");
+    titulo.textContent = `${i + 1}${sufijoOrdinal(i + 1)} Semestre`;
+    semDiv.appendChild(titulo);
+
+    semestre.forEach((ramo) => {
+      const div = document.createElement("div");
+      div.classList.add("ramo");
+
+      const
