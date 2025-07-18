@@ -1,36 +1,66 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
+  background-color: #f2f2f2;
   padding: 20px;
   text-align: center;
 }
 
 h1 {
   color: #333;
-  margin-bottom: 30px;
 }
 
-#malla {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-  max-width: 1200px;
-  margin: 0 auto;
+.controls {
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.malla {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 20px;
+  justify-content: flex-start;
+  padding: 10px;
+}
+
+.semestre {
+  min-width: 250px;
+  background-color: #ffffff;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.semestre h2 {
+  background-color: #e0e0e0;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 16px;
 }
 
 .curso {
-  background-color: #ddd;
-  padding: 15px;
-  border-radius: 10px;
-  border: 2px solid #aaa;
+  background: #eeeeee;
+  border: 1px solid #bbb;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s;
-  font-weight: bold;
-}
-
-.curso:hover {
-  transform: scale(1.05);
+  transition: all 0.3s ease;
 }
 
 .curso.aprobado {
@@ -40,9 +70,12 @@ h1 {
 }
 
 .curso.bloqueado {
-  background-color: #ccc;
-  color: #777;
-  border-color: #aaa;
+  background-color: #cccccc;
+  color: #666;
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.hidden {
+  display: none;
 }
