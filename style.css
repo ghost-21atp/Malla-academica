@@ -1,49 +1,57 @@
+/* Fondo general */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #e8f5e9; /* blanco verdoso */
-  margin: 0;
+  background-color: #fff9c4; /* amarillo pálido */
+  font-family: Arial, sans-serif;
   padding: 20px;
+  margin: 0;
 }
 
+/* Título */
 h1 {
-  text-align: center;
-  color: #2e7d32;
-}
-
-.controls {
   text-align: center;
   margin-bottom: 20px;
 }
 
-button {
-  padding: 10px 20px;
-  margin: 5px;
-  border: none;
-  border-radius: 8px;
-  background-color: #2e7d32;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #1b5e20;
-}
-
-.container {
+/* Contenedor de la malla */
+#malla {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-  padding: 10px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* Cuadro general */
-.course {
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: bold;
+/* Cuadros de los ramos */
+.ramo {
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0,
+  color: #000;
+  text-align: center;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Estados */
+.bloqueado {
+  background-color: #ffcdd2; /* rojo claro */
+  color: #b71c1c;
+  cursor: not-allowed;
+}
+
+.desbloqueado {
+  background-color: #c8e6c9; /* verde claro */
+  color: #2e7d32;
+}
+
+.aprobado {
+  background-color: #2e7d32; /* verde oscuro */
+  color: #fff;
+}
