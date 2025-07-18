@@ -1,159 +1,144 @@
-const container = document.getElementById('container');
-const resetBtn = document.getElementById('resetBtn');
+const mallaData = [
+  { nombre: "Química general", requisitos: [] },
+  { nombre: "Biología", requisitos: [] },
+  { nombre: "Zoología", requisitos: [] },
+  { nombre: "Introducción a la medicina veterinaria", requisitos: [] },
+  { nombre: "Practica 1", requisitos: [] },
+  { nombre: "Tecnología y innovación", requisitos: [] },
 
-const coursesData = [
-  { name: "Primer semestre", isTitle: true },
-  { name: "Química general", prereqs: [] },
-  { name: "Biologia", prereqs: [] },
-  { name: "Zoológia", prereqs: [] },
-  { name: "Introducción a la medicina veterinaria", prereqs: [] },
-  { name: "Practica 1", prereqs: [] },
-  { name: "Tecnología y innovación", prereqs: [] },
+  { nombre: "Química orgánica", requisitos: ["Química general"] },
+  { nombre: "Histología y embriología", requisitos: ["Biología"] },
+  { nombre: "Estadísticas", requisitos: [] },
+  { nombre: "Practica 2", requisitos: ["Practica 1"] },
+  { nombre: "Ecología", requisitos: ["Zoología"] },
+  { nombre: "Inglés", requisitos: [] },
 
-  { name: "Segundo semestre", isTitle: true },
-  { name: "Química orgánica", prereqs: ["Química general"] },
-  { name: "Histología y embriología", prereqs: ["Biologia"] },
-  { name: "Estadísticas", prereqs: [] },
-  { name: "Practica 2", prereqs: ["Practica 1"] },
-  { name: "Ecología", prereqs: ["Zoológia"] },
-  { name: "Ingles", prereqs: [] },
+  { nombre: "Fisiología veterinaria", requisitos: ["Histología y embriología"] },
+  { nombre: "Anatomía 1", requisitos: ["Histología y embriología"] },
+  { nombre: "Etología y bienestar animal", requisitos: [] },
+  { nombre: "Practica 3", requisitos: ["Practica 2"] },
+  { nombre: "Gestión ambiental y conservación", requisitos: ["Ecología"] },
 
-  { name: "Tercer semestre", isTitle: true },
-  { name: "Fisiología veterinaria", prereqs: ["Histología y embriología"] },
-  { name: "Anatómia 1", prereqs: ["Histología y embriología"] },
-  { name: "Etologia y bienestar animal", prereqs: [] },
-  { name: "Practica 3", prereqs: ["Practica 2"] },
-  { name: "Gestión ambiental y conservación", prereqs: ["Ecología"] },
+  { nombre: "Interacción hospedero patógeno", requisitos: ["Fisiología veterinaria"] },
+  { nombre: "Anatomía 2", requisitos: ["Anatomía 1"] },
+  { nombre: "Fisiología especial", requisitos: ["Fisiología veterinaria"] },
+  { nombre: "Módulo integrador ciclo inicial", requisitos: ["Etología y bienestar animal", "Gestión ambiental y conservación"] },
+  { nombre: "Principios éticos veterinarios", requisitos: [] },
+  { nombre: "Genética pecuaria", requisitos: [] },
 
-  { name: "Cuarto semestre", isTitle: true },
-  { name: "Interacción hospedero patógeno", prereqs: ["Fisiología veterinaria"] },
-  { name: "Anatómia 2", prereqs: ["Anatómia 1"] },
-  { name: "Fisiología especial", prereqs: ["Fisiología veterinaria"] },
-  { name: "Modulo integrador ciclo inicial", prereqs: ["Etologia y bienestar animal", "Gestión ambiental y conservación"] },
-  { name: "Principios éticos veterinarios", prereqs: [] },
-  { name: "Genética pecuaria", prereqs: [] },
+  { nombre: "Alimentación y nutrición animal", requisitos: ["Fisiología especial"] },
+  { nombre: "Practica 4", requisitos: ["Módulo integrador ciclo inicial"] },
+  { nombre: "Patología funcional", requisitos: ["Fisiología especial"] },
+  { nombre: "Inspección y control de alimentos", requisitos: ["Interacción hospedero patógeno"] },
+  { nombre: "Epidemiología", requisitos: ["Interacción hospedero patógeno"] },
+  { nombre: "Desarrollo sostenible", requisitos: [] },
 
-  { name: "Quinto semestre", isTitle: true },
-  { name: "Alimentación y nutrición animal", prereqs: ["Fisiología especial"] },
-  { name: "Practica 4", prereqs: ["Modulo integrador ciclo inicial"] },
-  { name: "Patologia funcional", prereqs: ["Fisiología especial"] },
-  { name: "Inspección y control de alimentos", prereqs: ["Interacción hospedero patógeno"] },
-  { name: "Epidemiología", prereqs: ["Interacción hospedero patógeno"] },
-  { name: "Desarrollo sostenible", prereqs: [] },
+  { nombre: "Farmacología y terapéutica", requisitos: [] },
+  { nombre: "Practica 5", requisitos: ["Practica 4"] },
+  { nombre: "Semiología", requisitos: [] },
+  { nombre: "Hematología y laboratorio clínico", requisitos: ["Fisiología especial"] },
+  { nombre: "Patología especial", requisitos: ["Patología especial"] },
+  { nombre: "Inglés técnico", requisitos: [] },
 
-  { name: "Sexto semestre", isTitle: true },
-  { name: "Farmacología y terapéutica", prereqs: [] },
-  { name: "Practica 5", prereqs: ["Practica 4"] },
-  { name: "Semiología", prereqs: [] },
-  { name: "Hematología y laboratorio clínico", prereqs: ["Fisiología especial"] },
-  { name: "Patologia especial", prereqs: ["Patologia especial"] },
-  { name: "Ingles técnico", prereqs: [] },
+  { nombre: "Producción animal 1", requisitos: ["Alimentación y nutrición animal"] },
+  { nombre: "Practica 6", requisitos: ["Practica 5"] },
+  { nombre: "Enfermedades infecciosas y parasitarias", requisitos: ["Patología especial"] },
+  { nombre: "Ginecología y obstetricia", requisitos: ["Semiología"] },
+  { nombre: "Metodología de la investigación", requisitos: [] },
+  { nombre: "Responsabilidad social y emprendimiento", requisitos: [] },
 
-  { name: "Séptimo semestre", isTitle: true },
-  { name: "Producción animal 1", prereqs: ["Alimentación y nutrición animal"] },
-  { name: "Practica 6", prereqs: ["Practica 5"] },
-  { name: "Enfermedades infecciosas y parasitarias", prereqs: ["Patologia especial"] },
-  { name: "Ginecología y obstetricia", prereqs: ["Semiología"] },
-  { name: "Metodología de la investigación", prereqs: [] },
-  { name: "Responsabilidad social y emprendimiento", prereqs: [] },
+  { nombre: "Producción animal 2", requisitos: ["Producción animal 1"] },
+  { nombre: "Medicina interna", requisitos: ["Enfermedades infecciosas y parasitarias"] },
+  { nombre: "Cirugía general", requisitos: ["Farmacología y terapéutica"] },
+  { nombre: "Salud pública", requisitos: ["Epidemiología"] },
+  { nombre: "Módulo integrador ciclo intermedio", requisitos: ["Practica 6", "Producción animal 1"] },
+  { nombre: "Preparación para la vida laboral", requisitos: [] },
 
-  { name: "Octavo semestre", isTitle: true },
-  { name: "Producción animal 2", prereqs: ["Producción animal 1"] },
-  { name: "Medicina interna", prereqs: ["Enfermedades infecciosas y parasitarias"] },
-  { name: "Cirugía general", prereqs: ["Farmacología y terapéutica"] },
-  { name: "Salud pública", prereqs: ["Epidemiología"] },
-  { name: "Modulo integrador ciclo intermedio", prereqs: ["Practica 6", "Producción animal 1"] },
-  { name: "Preparación para la vida laboral", prereqs: [] },
+  { nombre: "Clínica de animales mayores", requisitos: ["Medicina interna"] },
+  { nombre: "Técnicas quirúrgicas", requisitos: ["Cirugía general"] },
+  { nombre: "Clínica de animales menores", requisitos: ["Medicina interna"] },
+  { nombre: "Economía y administración de empresas veterinarias", requisitos: [] },
+  { nombre: "Imagenología", requisitos: ["Medicina interna"] },
+  { nombre: "Electivo de especialidad 1", requisitos: [] },
 
-  { name: "Noveno semestre", isTitle: true },
-  { name: "Clínica de animales mayores", prereqs: ["Medicina interna"] },
-  { name: "Técnicas quirúrgicas", prereqs: ["Cirugía general"] },
-  { name: "Clínica de animales menores", prereqs: ["Medicina interna"] },
-  { name: "Economía y administración de empresas veterinarias", prereqs: [] },
-  { name: "Imagenología", prereqs: ["Medicina interna"] },
-  { name: "Electivo de especialidad 1", prereqs: [] },
-
-  { name: "Décimo semestre", isTitle: true },
-  { name: "Modulo integrador profesional", prereqs: ["Clínica de animales mayores", "Clínica de animales menores"] },
-  { name: "Salud laboral y legislación veterinaria", prereqs: [] },
-  { name: "Evaluación de proyectos", prereqs: ["Economía y administración de empresas veterinarias"] },
-  { name: "Electivo de especialidad 2", prereqs: [] }
+  { nombre: "Módulo integrador profesional", requisitos: ["Clínica de animales mayores", "Clínica de animales menores"] },
+  { nombre: "Salud laboral y legislación veterinaria", requisitos: [] },
+  { nombre: "Evaluación de proyectos", requisitos: ["Economía y administración de empresas veterinarias"] },
+  { nombre: "Electivo de especialidad 2", requisitos: [] },
 ];
 
-const STORAGE_KEY = 'malla_academica_status';
+// Estado de cada ramo: "bloqueado", "desbloqueado" o "aprobado"
+const estadoRamos = {};
 
-// Carga el progreso guardado o inicia vacío
-let courseStates = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-
-// Devuelve curso por nombre
-function getCourse(name) {
-  return coursesData.find(c => c.name === name);
+// Inicialización: función para determinar si está desbloqueado
+function puedeDesbloquear(ramo) {
+  if (ramo.requisitos.length === 0) return true;
+  return ramo.requisitos.every(req => estadoRamos[req] === "aprobado");
 }
 
-// Chequea si todos los prereqs están completados
-function prereqsMet(prereqs) {
-  if (!prereqs || prereqs.length === 0) return true;
-  return prereqs.every(pr => courseStates[pr] === 'completed');
-}
+// Crea los elementos en pantalla
+function renderizarMalla() {
+  const contenedor = document.getElementById("malla");
+  contenedor.innerHTML = "";
 
-// Actualiza estados bloqueado/desbloqueado basado en prereqs
-function updateUnlocks() {
-  coursesData.forEach(course => {
-    if (course.isTitle) return;
-    if (courseStates[course.name] === 'completed') return; // ya aprobado
-    if (prereqsMet(course.prereqs)) {
-      if (courseStates[course.name] !== 'unlocked') {
-        courseStates[course.name] = 'unlocked';
-      }
+  mallaData.forEach(ramo => {
+    // Definir estado:
+    let estado;
+    if (!puedeDesbloquear(ramo)) {
+      estado = "bloqueado";
+    } else if (estadoRamos[ramo.nombre] === "aprobado") {
+      estado = "aprobado";
     } else {
-      courseStates[course.name] = 'locked';
+      estado = "desbloqueado";
+    }
+    estadoRamos[ramo.nombre] = estado;
+
+    const div = document.createElement("div");
+    div.className = "ramo " + estado;
+    div.textContent = ramo.nombre;
+    div.title = ramo.requisitos.length > 0 ? "Requisitos: " + ramo.requisitos.join(", ") : "Sin requisitos";
+
+    // Solo se puede clicar si está desbloqueado
+    if (estado === "desbloqueado") {
+      div.style.cursor = "pointer";
+      div.addEventListener("click", () => {
+        // Al clicar, se aprueba el ramo
+        estadoRamos[ramo.nombre] = "aprobado";
+        // Actualizar estados porque puede desbloquear otros
+        actualizarEstados();
+        renderizarMalla();
+      });
+    } else {
+      div.style.cursor = "not-allowed";
+    }
+
+    contenedor.appendChild(div);
+  });
+}
+
+function actualizarEstados() {
+  mallaData.forEach(ramo => {
+    if (estadoRamos[ramo.nombre] !== "aprobado") {
+      if (puedeDesbloquear(ramo)) {
+        estadoRamos[ramo.nombre] = "desbloqueado";
+      } else {
+        estadoRamos[ramo.nombre] = "bloqueado";
+      }
     }
   });
 }
 
-// Guarda progreso en localStorage
-function saveProgress() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(courseStates));
+// Iniciar todo
+function iniciar() {
+  // Inicializar estado con desbloqueados y bloqueados
+  mallaData.forEach(ramo => {
+    if (puedeDesbloquear(ramo)) {
+      estadoRamos[ramo.nombre] = "desbloqueado";
+    } else {
+      estadoRamos[ramo.nombre] = "bloqueado";
+    }
+  });
+  renderizarMalla();
 }
 
-// Crea el DOM de cada curso/semestre
-function createCourseElement(course) {
-  if (course.isTitle) {
-    const title = document.createElement('div');
-    title.classList.add('semester-title');
-    title.textContent = course.name;
-    return title;
-  }
-  
-  const div = document.createElement('div');
-  div.classList.add('course');
-  div.textContent = course.name;
-
-  // Estado
-  const state = courseStates[course.name] || 'locked';
-
-  div.classList.add(state);
-
-  if(state === 'locked') {
-    div.title = 'Bloqueado: Prerrequisitos no cumplidos';
-  } else if(state === 'unlocked') {
-    div.title = 'Pendiente: Haz clic para aprobar';
-  } else if(state === 'completed') {
-    div.title = 'Aprobado';
-  }
-
-  // Solo se puede clickear si desbloqueado o aprobado
-  if(state !== 'locked') {
-    div.style.cursor = 'pointer';
-    div.addEventListener('click', () => {
-      toggleCourseState(course.name);
-    });
-  }
-
-  return div;
-}
-
-// Alterna el estado del curso (pendiente → aprobado → pendiente)
-function toggleCourseState(courseName) {
-  if (courseStates[courseName] === 'unlocked') {
-    courseStates[courseName] = 'completed
+iniciar();
