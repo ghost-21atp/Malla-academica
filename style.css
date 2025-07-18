@@ -1,74 +1,63 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #fff9db;
-  margin: 20px;
-  color: #333;
+  background-color: #ffffe0; /* amarillo pálido */
+  margin: 0;
+  padding: 20px;
 }
 
-#malla {
+h1 {
+  text-align: center;
+  color: #2e7d32;
+}
+
+.grid {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 15px;
+  flex-direction: row;
+  gap: 20px;
   overflow-x: auto;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #ccc;
+  margin-bottom: 20px;
 }
 
-.semestre {
+.column {
   display: flex;
   flex-direction: column;
-  min-width: 200px;
-  border: 1px solid #999;
-  border-radius: 8px;
-  padding: 10px;
-  background-color: #f0f0f0;
+  gap: 10px;
 }
 
-.semestre h2 {
-  text-align: center;
-  margin-bottom: 10px;
-  user-select: none;
-  font-size: 18px;
-}
-
-.ramo {
-  margin: 5px 0;
+.subject {
   padding: 10px;
-  border-radius: 6px;
-  font-weight: 600;
+  border: 2px solid #ccc;
+  border-radius: 5px;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  user-select: none;
+  background-color: #c8e6c9; /* verde claro desbloqueado */
+  transition: background-color 0.3s;
 }
 
-.ramo.bloqueado {
-  background-color: #f9c2c2;
-  color: #8a1c1c;
+.subject.blocked {
+  background-color: #ffcdd2; /* rojo claro bloqueado */
+  border-color: #c62828;
+  color: #c62828;
   cursor: not-allowed;
 }
 
-.ramo.desbloqueado {
-  background-color: #b8e6b8;
-  color: #245624;
+.subject.completed {
+  background-color: #2e7d32; /* verde oscuro aprobado */
+  color: white;
+  border-color: #1b5e20;
 }
 
-.ramo.aprobado {
-  background-color: #3a7d3a;
-  color: #d0f0d0;
-  font-weight: 700;
-}
-
-#btn-reset {
-  margin-top: 15px;
+button#reset {
+  display: block;
+  margin: 0 auto;
   padding: 10px 20px;
-  background-color: #ffcc00;
+  background-color: #2e7d32;
+  color: white;
   border: none;
-  border-radius: 6px;
-  font-weight: 700;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-#btn-reset:hover {
-  background-color: #e6b800;
+button#reset:hover {
+  background-color: #1b5e20;
 }
