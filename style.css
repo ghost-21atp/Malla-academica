@@ -1,5 +1,5 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #e8f5e9; /* blanco verdoso */
   margin: 0;
   padding: 20px;
@@ -24,6 +24,7 @@ button {
   color: white;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
@@ -32,50 +33,17 @@ button:hover {
 
 .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
+  padding: 10px;
 }
 
 /* Cuadro general */
 .course {
-  padding: 15px;
+  padding: 20px;
   border-radius: 12px;
   text-align: center;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* ESTADOS */
-
-/* 🔒 BLOQUEADO */
-.locked {
-  background-color: #ffcdd2; /* rojo claro */
-  border: 2px dashed #c62828; /* borde rojo fuerte */
-  color: #c62828;
-  cursor: not-allowed;
-}
-
-/* 🔓 DESBLOQUEADO */
-.unlocked {
-  background-color: #c8e6c9; /* verde claro */
-  border: 2px solid #81c784;
-  color: #2e7d32;
-}
-
-/* ✅ APROBADO */
-.completed {
-  background-color: #388e3c; /* verde oscuro */
-  border: 2px solid #1b5e20;
-  color: white;
-}
-
-/* Título de cada semestre */
-.semester-title {
-  text-align: center;
-  margin: 20px 0 10px;
-  font-size: 20px;
-  color: #2e7d32;
-  grid-column: 1 / -1;
-}
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,
